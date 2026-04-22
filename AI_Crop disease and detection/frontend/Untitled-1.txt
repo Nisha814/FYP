@@ -1,0 +1,2 @@
+cd "c:\Users\LEN\Documents\FYP\AI_Crop disease and detection\backend"
+npm install
