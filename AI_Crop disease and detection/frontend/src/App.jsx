@@ -16,7 +16,14 @@ import Profile from './pages/Profile'
 import Social from './pages/Social'
 import Notifications from './pages/Notifications'
 import ModeratorDashboard from './pages/ModeratorDashboard'
+import ChatAssistant from './pages/ChatAssistant'
+import AdminPanel from './pages/AdminPanel'
 import NotFound from './pages/NotFound'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import Documentation from './pages/Documentation'
+import ApiReference from './pages/ApiReference'
+import Support from './pages/Support'
+import ExternalServiceInfo from './pages/ExternalServiceInfo'
 
 function App() {
   return (
@@ -30,6 +37,11 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/documentation" element={<Documentation />} />
+                <Route path="/api-reference" element={<ApiReference />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/info/:service" element={<ExternalServiceInfo />} />
                 <Route
                   path="/dashboard"
                   element={
@@ -83,6 +95,22 @@ function App() {
                   element={
                     <PrivateRoute>
                       <ModeratorDashboard />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/chat"
+                  element={
+                    <PrivateRoute>
+                      <ChatAssistant />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/admin"
+                  element={
+                    <PrivateRoute>
+                      <AdminPanel />
                     </PrivateRoute>
                   }
                 />

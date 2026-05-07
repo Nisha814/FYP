@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CropGuard AI — Opening app…</title>
+    <meta
+      http-equiv="refresh"
+      content="0;url=frontend/dist/index.html"
+    />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 40rem;
+        margin: 3rem auto;
+        padding: 0 1rem;
+        line-height: 1.5;
+      }
+      code { background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 4px; }
+      a { color: #059669; }
+    </style>
+  </head>
+  <body>
+    <p>Redirecting to the built application…</p>
+    <p>
+      If nothing happens,
+      <a href="frontend/dist/index.html">open the app directly</a>.
+      If you still see older files or a blank screen, open a terminal inside
+      <code>frontend</code>, run <code>npm install</code> once, then
+      <code>npm run build</code> before using Live Server again.
+    </p>
+    <p>
+      For development with hot reload, run <code>npm run dev</code> inside
+      <code>frontend</code> (default URL is usually http://localhost:3000 ).
+    </p>
+    <script>
+      window.location.replace('frontend/dist/index.html')
+    </script>
+  </body>
+</html>

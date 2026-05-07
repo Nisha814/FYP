@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+// DEV: same-origin `/api` is proxied by Vite → avoids cross-origin cookie/CORS friction.
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? '/api' : 'http://localhost:5000/api')
 
 const api = axios.create({
   baseURL: API_URL,
@@ -68,6 +71,23 @@ export const socialService = {
   getReportedPosts: () => api.get('/posts/moderation/reported'),
   resolveReport: (postId, reportId, status) => api.patch(`/posts/moderation/${postId}/report`, { reportId, status }),
   getModeratorAuditLogs: (params = {}) => api.get('/posts/moderation/audit', { params })
+}
+
+export const chatService = {
+  ask: (message, plantType) => api.post('/chat', { message, plantType })
+}
+
+export const noticeService = {
+  getMyNotices: () => api.get('/notices'),
+  markRead: (id) => api.patch(`/notices/${id}/read`)
+}
+
+export const adminService = {
+  getUsers: () => api.get('/admin/users'),
+  updateUserRole: (userId, role) => api.patch(`/admin/users/${userId}/role`, { role }),
+  getPosts: () => api.get('/admin/posts'),
+  deletePost: (postId) => api.delete(`/admin/posts/${postId}`),
+  sendNotice: (payload) => api.post('/admin/notices', payload)
 }
 
 export const notificationService = {

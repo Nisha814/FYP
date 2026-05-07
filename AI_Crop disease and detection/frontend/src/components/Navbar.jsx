@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { FiHome, FiCamera, FiClock, FiBarChart2, FiUsers, FiBell, FiShield, FiUser, FiLogOut } from 'react-icons/fi'
+import { FiHome, FiCamera, FiClock, FiBarChart2, FiUsers, FiBell, FiMessageCircle, FiShield, FiUser, FiLogOut } from 'react-icons/fi'
 import { useEffect, useState } from 'react'
 import { notificationService } from '../services/api'
 import { getSocket } from '../services/socket'
@@ -83,12 +83,18 @@ const Navbar = () => {
                 >
                   <FiUsers className="mr-1" /> Social
                 </Link>
-                {['expert', 'admin'].includes(user?.role) ? (
+                <Link
+                  to="/chat"
+                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-primary-600"
+                >
+                  <FiMessageCircle className="mr-1" /> Chat
+                </Link>
+                {user?.role === 'admin' ? (
                   <Link
-                    to="/moderator"
+                    to="/admin"
                     className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-primary-600"
                   >
-                    <FiShield className="mr-1" /> Moderator
+                    <FiShield className="mr-1" /> Admin
                   </Link>
                 ) : null}
               </div>

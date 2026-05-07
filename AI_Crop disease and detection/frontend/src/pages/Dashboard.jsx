@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { predictionService } from '../services/api'
+import { noticeService, predictionService } from '../services/api'
 import { FiCamera, FiTrendingUp, FiActivity, FiAlertCircle } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 
@@ -12,6 +12,7 @@ const Dashboard = () => {
     diseasedCount: 0
   })
   const [recentPredictions, setRecentPredictions] = useState([])
+  const [notices, setNotices] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -20,13 +21,15 @@ const Dashboard = () => {
 
   const loadDashboardData = async () => {
     try {
-      const [predictionsRes, analyticsRes] = await Promise.all([
+      const [predictionsRes, analyticsRes, noticesRes] = await Promise.all([
         predictionService.getPredictions(),
-        predictionService.getAnalytics()
+        predictionService.getAnalytics(),
+        noticeService.getMyNotices()
       ])
 
       setStats(analyticsRes.data.analytics)
       setRecentPredictions(predictionsRes.data.predictions.slice(0, 5))
+      setNotices((noticesRes.data.notices || []).slice(0, 5))
     } catch (error) {
       toast.error('Failed to load dashboard data')
     } finally {
@@ -182,6 +185,23 @@ const Dashboard = () => {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="card">
+        <h2 className="text-xl font-semibold mb-4">Admin Notices</h2>
+        {notices.length === 0 ? (
+          <p className="text-gray-500">No notices right now.</p>
+        ) : (
+          <div className="space-y-2">
+            {notices.map((notice) => (
+              <div key={notice._id} className={`border rounded p-3 ${notice.isRead ? 'bg-gray-50' : 'bg-yellow-50 border-yellow-200'}`}>
+                <p className="font-semibold">{notice.title}</p>
+                <p className="text-sm text-gray-700">{notice.message}</p>
+                <p className="text-xs text-gray-500 mt-1">{new Date(notice.createdAt).toLocaleString()}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

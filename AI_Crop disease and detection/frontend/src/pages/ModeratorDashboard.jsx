@@ -86,7 +86,7 @@ const ModeratorDashboard = () => {
     }
   }
 
-  if (!['expert', 'admin'].includes(user?.role)) {
+  if (user?.role !== 'admin') {
     return (
       <div className="max-w-3xl mx-auto py-8 px-4">
         <div className="card text-center py-10 text-gray-600">Moderator access only.</div>

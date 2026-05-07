@@ -10,10 +10,16 @@ const extractCookieToken = (cookieHeader) => {
   return tokenPair ? decodeURIComponent(tokenPair.split('=')[1]) : null;
 };
 
+const normalizeSocketCorsOrigin = (corsOrigin) => {
+  if (Array.isArray(corsOrigin)) return corsOrigin
+  if (typeof corsOrigin === 'string') return corsOrigin
+  return true
+}
+
 const initSocket = (httpServer, corsOrigin) => {
   ioInstance = new Server(httpServer, {
     cors: {
-      origin: corsOrigin,
+      origin: normalizeSocketCorsOrigin(corsOrigin),
       credentials: true
     }
   });

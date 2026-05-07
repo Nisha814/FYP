@@ -49,9 +49,9 @@ const upload = multer({
 router.use(protect);
 router.get('/', getPosts);
 router.post('/', upload.single('image'), createPost);
-router.get('/moderation/reported', authorizeRoles('expert', 'admin'), getReportedPosts);
-router.patch('/moderation/:id/report', authorizeRoles('expert', 'admin'), resolveReport);
-router.get('/moderation/audit', authorizeRoles('expert', 'admin'), getModeratorAuditLogs);
+router.get('/moderation/reported', authorizeRoles('admin'), getReportedPosts);
+router.patch('/moderation/:id/report', authorizeRoles('admin'), resolveReport);
+router.get('/moderation/audit', authorizeRoles('admin'), getModeratorAuditLogs);
 router.post('/:id/like', toggleLikePost);
 router.post('/:id/comments', addComment);
 router.post('/:id/report', reportPost);

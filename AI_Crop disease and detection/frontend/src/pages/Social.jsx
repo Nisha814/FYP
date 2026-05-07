@@ -5,6 +5,7 @@ import { socialService } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 
 const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'
+const resolveImageUrl = (url) => (url?.startsWith('http') ? url : `${API_BASE}${url}`)
 
 const Social = () => {
   const { user } = useAuth()
@@ -216,8 +217,7 @@ const Social = () => {
           posts.map((post) => {
             const likedByMe = (post.likes || []).includes(user?.id)
             const isOwner = post.user?._id === user?.id
-            const isModerator = ['expert', 'admin'].includes(user?.role)
-            const canDelete = isOwner || isModerator
+            const canDelete = isOwner || user?.role === 'admin'
             return (
               <div key={post._id} className="card">
                 <div className="flex items-center justify-between mb-3">
@@ -257,7 +257,7 @@ const Social = () => {
                 )}
                 {post.imageUrl ? (
                   <img
-                    src={`${API_BASE}${post.imageUrl}`}
+                    src={resolveImageUrl(post.imageUrl)}
                     alt="post"
                     className="w-full max-h-80 object-cover rounded-lg mb-3"
                   />

@@ -13,15 +13,30 @@ const Footer = () => {
               Helping farmers make data-driven decisions for better crop health.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Link
+                to="/info/github"
+                className="text-gray-400 hover:text-white transition-colors"
+                title="GitHub — sign in on GitHub’s site"
+                aria-label="GitHub information and sign-in"
+              >
                 <FiGithub className="text-xl" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link
+                to="/info/email"
+                className="text-gray-400 hover:text-white transition-colors"
+                title="Web mail — sign in with your provider"
+                aria-label="Email and web mail sign-in"
+              >
                 <FiMail className="text-xl" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link
+                to="/info/linkedin"
+                className="text-gray-400 hover:text-white transition-colors"
+                title="LinkedIn — sign in on LinkedIn’s site"
+                aria-label="LinkedIn information and sign-in"
+              >
                 <FiLinkedin className="text-xl" />
-              </a>
+              </Link>
             </div>
           </div>
           
@@ -55,24 +70,24 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Resources</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Link to="/documentation" className="text-gray-400 hover:text-white transition-colors">
                   Documentation
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Link to="/api-reference" className="text-gray-400 hover:text-white transition-colors">
                   API Reference
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Link to="/support" className="text-gray-400 hover:text-white transition-colors">
                   Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
