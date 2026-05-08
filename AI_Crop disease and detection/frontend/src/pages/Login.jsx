@@ -75,7 +75,7 @@ const Login = () => {
               type="button"
               onClick={() => {
                 setLoginMode('admin')
-                setFormData({ email: 'admin@cropguard.local', password: 'Admin@123' })
+                setFormData({ email: '', password: '' })
               }}
               className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg text-sm font-semibold transition-all ${
                 loginMode === 'admin'
@@ -87,21 +87,6 @@ const Login = () => {
               <span>Admin</span>
             </button>
           </div>
-
-          {loginMode === 'admin' && (
-            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-              <div className="flex items-start space-x-3">
-                <FiShield className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-semibold text-blue-900">Test Admin Credentials</p>
-                  <p className="text-sm text-blue-700 mt-1">
-                    Email: <span className="font-mono">admin@cropguard.local</span><br />
-                    Password: <span className="font-mono">Admin@123</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
@@ -177,7 +162,7 @@ const Login = () => {
               <button
                 onClick={() => {
                   setLoginMode('admin')
-                  setFormData({ email: 'admin@cropguard.local', password: 'Admin@123' })
+                  setFormData({ email: '', password: '' })
                 }}
                 className="text-sm text-gray-500 hover:text-primary-600 transition-colors underline"
               >

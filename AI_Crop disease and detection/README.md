@@ -79,25 +79,39 @@ AI_Crop disease and detection/
 - **npm** or **yarn**
 - **Git**
 
-### Quick Setup
+### Quick Setup (Recommended)
+
+Run the included startup script from the root directory:
+```powershell
+.\Start-Project.ps1
+```
+This will open two new terminal windows starting both the backend and frontend.
+
+### Manual Setup
 
 1. **Backend Setup** (Terminal 1)
 ```bash
 cd backend
 npm install
-# Copy .env.example to .env and configure
 npm start
 ```
+*Note: If local MongoDB is not running, it will automatically use an in-memory database for testing (data will be lost on restart).*
 
-2. **AI Service Setup** (Terminal 2)
+2. **Frontend Setup** (Terminal 2)
 ```bash
-cd ai-service
-pip install -r requirements.txt
-# Create .env file from .env.example
-python app.py
+cd frontend
+npm install
+npm run dev
 ```
 
-3. **Frontend Setup** (Terminal 3)
+### ⚠️ Important Usage Notes
+- **Do NOT use VS Code "Go Live" (Live Server)**: This project requires the Vite development server to handle API proxying.
+- **Access URL**: Always use **http://localhost:3000** to access the application.
+- **Login Issues**: If login fails, ensure the backend is running on port 5000. Check the terminal logs for errors.
+- **Test Credentials**:
+  - Admin: `admin@cropguard.local` / `Admin@123`
+  - Farmer: `farmer.john@cropguard.local` / `Farmer@123`
+
 ```bash
 cd frontend
 npm install
