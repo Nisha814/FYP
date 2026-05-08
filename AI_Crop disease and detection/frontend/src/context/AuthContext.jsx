@@ -75,7 +75,10 @@ export const AuthProvider = ({ children }) => {
         const response = await authService.getMe()
         setUser(response.data.user)
       } catch (refreshError) {
-        console.error('Failed to load user:', refreshError)
+        // Only log if it's not a standard 401/session expired
+        if (refreshError.response?.status !== 401) {
+          console.error('Failed to load user session:', refreshError)
+        }
         setUser(null)
       }
     } finally {

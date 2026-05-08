@@ -221,9 +221,23 @@ const Social = () => {
             return (
               <div key={post._id} className="card">
                 <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <p className="font-semibold text-gray-900">{post.user?.name || 'User'}</p>
-                    <p className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
+                  <div className="flex items-center space-x-2">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <p className="font-semibold text-gray-900">{post.user?.name || 'User'}</p>
+                        {post.user?.role === 'admin' && (
+                          <span className="px-1.5 py-0.5 text-[10px] font-bold bg-purple-100 text-purple-700 rounded uppercase tracking-wider">
+                            Admin
+                          </span>
+                        )}
+                        {post.user?.role === 'expert' && (
+                          <span className="px-1.5 py-0.5 text-[10px] font-bold bg-blue-100 text-blue-700 rounded uppercase tracking-wider">
+                            Expert
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
+                    </div>
                   </div>
                   {post.plantType ? (
                     <span className="px-2 py-1 text-xs rounded bg-primary-100 text-primary-700">{post.plantType}</span>
@@ -298,8 +312,20 @@ const Social = () => {
                 <div className="space-y-2 mb-3">
                   {(post.comments || []).slice(-3).map((comment) => (
                     <div key={comment._id} className="bg-gray-50 rounded p-2 text-sm">
-                      <span className="font-semibold">{comment.user?.name || 'User'}: </span>
-                      <span className="text-gray-700">{comment.text}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="font-semibold text-gray-900">{comment.user?.name || 'User'}</span>
+                        {comment.user?.role === 'admin' && (
+                          <span className="px-1 py-0.5 text-[8px] font-bold bg-purple-100 text-purple-700 rounded uppercase">
+                            Admin
+                          </span>
+                        )}
+                        {comment.user?.role === 'expert' && (
+                          <span className="px-1 py-0.5 text-[8px] font-bold bg-blue-100 text-blue-700 rounded uppercase">
+                            Expert
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-gray-700">{comment.text}</p>
                     </div>
                   ))}
                 </div>

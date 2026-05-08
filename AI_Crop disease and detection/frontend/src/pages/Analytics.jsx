@@ -44,19 +44,19 @@ const Analytics = () => {
     )
   }
 
-  const diseaseData = analytics.diseaseDistribution.map((item) => ({
-    name: item._id,
-    value: item.count
+  const diseaseData = (analytics?.diseaseDistribution || []).map((item) => ({
+    name: item._id || 'Unknown',
+    value: item.count || 0
   }))
 
-  const plantData = analytics.plantTypeDistribution.map((item) => ({
-    name: item._id,
-    value: item.count
+  const plantData = (analytics?.plantTypeDistribution || []).map((item) => ({
+    name: item._id || 'Unknown',
+    value: item.count || 0
   }))
 
   const healthData = [
-    { name: 'Healthy', value: analytics.healthyCount, color: '#22c55e' },
-    { name: 'Diseased', value: analytics.diseasedCount, color: '#ef4444' }
+    { name: 'Healthy', value: analytics?.healthyCount || 0, color: '#22c55e' },
+    { name: 'Diseased', value: analytics?.diseasedCount || 0, color: '#ef4444' }
   ]
 
   return (

@@ -97,12 +97,20 @@ const Navbar = () => {
                     <FiShield className="mr-1" /> Admin
                   </Link>
                 ) : null}
+                {user?.role === 'expert' ? (
+                  <Link
+                    to="/moderator"
+                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-primary-600"
+                  >
+                    <FiShield className="mr-1" /> Expert
+                  </Link>
+                ) : null}
               </div>
             )}
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
             {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
+              <>
                 <Link
                   to="/profile"
                   className="flex items-center text-sm text-gray-700 hover:text-primary-600"
@@ -126,16 +134,22 @@ const Navbar = () => {
                   <FiLogOut className="mr-1" />
                   Logout
                 </button>
-              </div>
+              </>
             ) : (
-              <div className="flex items-center space-x-4">
-                <Link to="/login" className="text-sm text-gray-700 hover:text-primary-600">
+              <>
+                <Link
+                  to="/login"
+                  className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium"
+                >
                   Login
                 </Link>
-                <Link to="/register" className="btn-primary text-sm">
-                  Sign Up
+                <Link
+                  to="/register"
+                  className="bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700 transition-colors"
+                >
+                  Register
                 </Link>
-              </div>
+              </>
             )}
           </div>
         </div>

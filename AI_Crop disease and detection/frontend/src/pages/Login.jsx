@@ -167,13 +167,22 @@ const Login = () => {
           </form>
 
           {loginMode === 'user' && (
-            <div className="mt-8 text-center">
+            <div className="mt-8 text-center space-y-2">
               <p className="text-gray-600">
                 Don't have an account?{' '}
                 <Link to="/register" className="font-semibold text-primary-600 hover:text-primary-500 transition-colors">
                   Create an account
                 </Link>
               </p>
+              <button
+                onClick={() => {
+                  setLoginMode('admin')
+                  setFormData({ email: 'admin@cropguard.local', password: 'Admin@123' })
+                }}
+                className="text-sm text-gray-500 hover:text-primary-600 transition-colors underline"
+              >
+                Login as Administrator
+              </button>
             </div>
           )}
         </div>

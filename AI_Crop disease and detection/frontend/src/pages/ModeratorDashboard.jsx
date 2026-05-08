@@ -86,10 +86,10 @@ const ModeratorDashboard = () => {
     }
   }
 
-  if (user?.role !== 'admin') {
+  if (user?.role !== 'admin' && user?.role !== 'expert') {
     return (
       <div className="max-w-3xl mx-auto py-8 px-4">
-        <div className="card text-center py-10 text-gray-600">Moderator access only.</div>
+        <div className="card text-center py-10 text-gray-600">Expert/Moderator access only.</div>
       </div>
     )
   }

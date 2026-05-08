@@ -27,8 +27,13 @@ const Dashboard = () => {
         noticeService.getMyNotices()
       ])
 
-      setStats(analyticsRes.data.analytics)
-      setRecentPredictions(predictionsRes.data.predictions.slice(0, 5))
+      setStats({
+        totalPredictions: analyticsRes.data.analytics?.totalPredictions || 0,
+        recentPredictions: analyticsRes.data.analytics?.recentPredictions || 0,
+        healthyCount: analyticsRes.data.analytics?.healthyCount || 0,
+        diseasedCount: analyticsRes.data.analytics?.diseasedCount || 0
+      })
+      setRecentPredictions(predictionsRes.data.predictions?.slice(0, 5) || [])
       setNotices((noticesRes.data.notices || []).slice(0, 5))
     } catch (error) {
       toast.error('Failed to load dashboard data')
