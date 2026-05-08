@@ -22,14 +22,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (!user) return undefined
 
-    // Refresh proactively before short-lived access token expires.
+    // Refresh proactively before token expires (now 1 day, so refresh every 12 hours)
     const refreshInterval = setInterval(async () => {
       try {
         await authService.refresh()
       } catch (error) {
-        setUser(null)
+        console.error('Proactive refresh failed:', error)
+        // Don't immediately log out on refresh failure - let axios interceptor handle it
       }
-    }, 10 * 60 * 1000)
+    }, 12 * 60 * 60 * 1000)
 
     return () => clearInterval(refreshInterval)
   }, [user])
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }) => {
       try {
         await authService.refresh()
       } catch (error) {
-        setUser(null)
+        console.error('Visibility/focus refresh failed:', error)
       }
     }
 
@@ -74,6 +75,7 @@ export const AuthProvider = ({ children }) => {
         const response = await authService.getMe()
         setUser(response.data.user)
       } catch (refreshError) {
+        console.error('Failed to load user:', refreshError)
         setUser(null)
       }
     } finally {
@@ -113,7 +115,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await authService.logout()
     } catch (error) {
-      // Ignore request failure and clear local auth state.
+      console.error('Logout request failed:', error)
     }
     setUser(null)
   }

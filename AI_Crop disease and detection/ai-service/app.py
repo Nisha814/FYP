@@ -183,6 +183,68 @@ def get_disease_recommendations(disease_name, plant_type):
                 'dosage': '1 tablespoon per liter of water'
             }
         },
+        'Bacterial Spot': {
+            'fertilizer': {
+                'name': 'Calcium-rich fertilizer',
+                'description': 'Helps strengthen cell walls',
+                'application': 'Apply every 3 weeks',
+                'dosage': '1-2 kg per 100 sq meters'
+            },
+            'pesticide': {
+                'name': 'Copper sulfate',
+                'description': 'Effective against bacterial diseases',
+                'application': 'Spray every 10 days',
+                'dosage': '2 g per liter of water'
+            },
+            'organic': {
+                'name': 'Garlic spray',
+                'description': 'Natural antibacterial treatment',
+                'application': 'Spray weekly',
+                'dosage': '10 garlic cloves blended per liter of water'
+            }
+        },
+        'Powdery Mildew': {
+            'fertilizer': {
+                'name': 'Potassium bicarbonate',
+                'description': 'Helps control powdery mildew',
+                'application': 'Apply every 2 weeks',
+                'dosage': '1 tbsp per gallon of water'
+            },
+            'organic': {
+                'name': 'Milk spray',
+                'description': 'Natural treatment for powdery mildew',
+                'application': 'Spray weekly',
+                'dosage': '1 part milk to 9 parts water'
+            }
+        },
+        'Rust': {
+            'fertilizer': {
+                'name': 'Balanced NPK fertilizer',
+                'description': 'Boosts plant immunity',
+                'application': 'Apply monthly',
+                'dosage': '1-2 kg per 100 sq meters'
+            },
+            'pesticide': {
+                'name': 'Sulfur-based fungicide',
+                'description': 'Effective against rust diseases',
+                'application': 'Spray every 7-10 days',
+                'dosage': 'Follow product instructions'
+            }
+        },
+        'Anthracnose': {
+            'pesticide': {
+                'name': 'Chlorothalonil',
+                'description': 'Broad-spectrum fungicide',
+                'application': 'Spray every 7-14 days',
+                'dosage': 'Follow product instructions'
+            },
+            'organic': {
+                'name': 'Compost tea',
+                'description': 'Boosts plant health naturally',
+                'application': 'Apply as soil drench weekly',
+                'dosage': '5 liters per plant'
+            }
+        },
         'Healthy': {
             'fertilizer': {
                 'name': 'General purpose fertilizer',
@@ -225,6 +287,7 @@ def infer_plant_identity(plant_type, disease_name):
     """Infer plant identity and high-level category."""
     normalized = (plant_type or "").strip().lower()
     known = {
+        # Vegetables
         "tomato": "vegetable",
         "potato": "vegetable",
         "pepper": "vegetable",
@@ -232,12 +295,55 @@ def infer_plant_identity(plant_type, disease_name):
         "cucumber": "vegetable",
         "brinjal": "vegetable",
         "eggplant": "vegetable",
+        "carrot": "vegetable",
+        "onion": "vegetable",
+        "garlic": "vegetable",
+        "cabbage": "vegetable",
+        "cauliflower": "vegetable",
+        "broccoli": "vegetable",
+        "spinach": "vegetable",
+        "lettuce": "vegetable",
+        "peas": "vegetable",
+        "beans": "vegetable",
+        "corn": "vegetable",
+        "zucchini": "vegetable",
+        "pumpkin": "vegetable",
+        
+        # Fruits
         "apple": "fruit",
         "orange": "fruit",
         "banana": "fruit",
         "grape": "fruit",
         "mango": "fruit",
-        "strawberry": "fruit"
+        "strawberry": "fruit",
+        "pineapple": "fruit",
+        "watermelon": "fruit",
+        "papaya": "fruit",
+        "guava": "fruit",
+        "pomegranate": "fruit",
+        "lemon": "fruit",
+        "lime": "fruit",
+        "cherry": "fruit",
+        "peach": "fruit",
+        "pear": "fruit",
+        "plum": "fruit",
+        "avocado": "fruit",
+        "kiwi": "fruit",
+        
+        # Trees
+        "mango tree": "tree",
+        "apple tree": "tree",
+        "orange tree": "tree",
+        "banana tree": "tree",
+        "guava tree": "tree",
+        "pomegranate tree": "tree",
+        "lemon tree": "tree",
+        "peach tree": "tree",
+        "pear tree": "tree",
+        "coconut tree": "tree",
+        "neem tree": "tree",
+        "banyan tree": "tree",
+        "peepal tree": "tree"
     }
 
     if normalized in known:
@@ -248,6 +354,9 @@ def infer_plant_identity(plant_type, disease_name):
         "Late Blight": ("Potato", "vegetable"),
         "Bacterial Spot": ("Pepper", "vegetable"),
         "Leaf Mold": ("Tomato", "vegetable"),
+        "Powdery Mildew": ("Cucumber", "vegetable"),
+        "Rust": ("Wheat", "other"),
+        "Anthracnose": ("Mango", "fruit"),
         "Healthy": ("Unknown", "other")
     }
     return disease_to_plant.get(disease_name, ("Unknown", "other"))
@@ -324,16 +433,146 @@ def predict():
             except Exception as e:
                 print(f"Model prediction error: {e}")
                 # Fallback to mock prediction
-                disease = 'Early Blight'
-                confidence = 85.5
-                is_healthy = False
-                identified_plant, plant_category = infer_plant_identity(plant_type, disease)
+                from random import choice, uniform
+                mock_predictions = [
+                    # Vegetables
+                    ('Tomato', 'Early Blight', False, 75.0),
+                    ('Tomato', 'Late Blight', False, 80.0),
+                    ('Tomato', 'Healthy', True, 90.0),
+                    ('Potato', 'Early Blight', False, 78.0),
+                    ('Potato', 'Late Blight', False, 85.0),
+                    ('Potato', 'Healthy', True, 88.0),
+                    ('Pepper', 'Bacterial Spot', False, 72.0),
+                    ('Pepper', 'Healthy', True, 92.0),
+                    ('Cucumber', 'Powdery Mildew', False, 70.0),
+                    ('Cucumber', 'Healthy', True, 89.0),
+                    ('Carrot', 'Healthy', True, 93.0),
+                    ('Onion', 'Healthy', True, 91.0),
+                    ('Garlic', 'Healthy', True, 94.0),
+                    ('Cabbage', 'Healthy', True, 90.0),
+                    ('Cauliflower', 'Healthy', True, 89.0),
+                    ('Broccoli', 'Healthy', True, 91.0),
+                    ('Spinach', 'Healthy', True, 92.0),
+                    ('Lettuce', 'Healthy', True, 93.0),
+                    ('Peas', 'Healthy', True, 90.0),
+                    ('Beans', 'Healthy', True, 91.0),
+                    ('Corn', 'Healthy', True, 92.0),
+                    ('Zucchini', 'Healthy', True, 89.0),
+                    ('Pumpkin', 'Healthy', True, 90.0),
+                    
+                    # Fruits
+                    ('Apple', 'Healthy', True, 91.0),
+                    ('Apple', 'Rust', False, 75.0),
+                    ('Orange', 'Healthy', True, 92.0),
+                    ('Banana', 'Healthy', True, 90.0),
+                    ('Banana', 'Anthracnose', False, 78.0),
+                    ('Grape', 'Healthy', True, 91.0),
+                    ('Mango', 'Healthy', True, 92.0),
+                    ('Mango', 'Anthracnose', False, 76.0),
+                    ('Strawberry', 'Healthy', True, 90.0),
+                    ('Pineapple', 'Healthy', True, 91.0),
+                    ('Watermelon', 'Healthy', True, 92.0),
+                    ('Papaya', 'Healthy', True, 89.0),
+                    ('Guava', 'Healthy', True, 90.0),
+                    ('Pomegranate', 'Healthy', True, 91.0),
+                    ('Lemon', 'Healthy', True, 92.0),
+                    ('Lime', 'Healthy', True, 91.0),
+                    ('Cherry', 'Healthy', True, 90.0),
+                    ('Peach', 'Healthy', True, 91.0),
+                    ('Pear', 'Healthy', True, 92.0),
+                    ('Plum', 'Healthy', True, 90.0),
+                    ('Avocado', 'Healthy', True, 91.0),
+                    ('Kiwi', 'Healthy', True, 92.0),
+                    
+                    # Trees
+                    ('Mango Tree', 'Healthy', True, 90.0),
+                    ('Apple Tree', 'Healthy', True, 91.0),
+                    ('Orange Tree', 'Healthy', True, 92.0),
+                    ('Banana Tree', 'Healthy', True, 89.0),
+                    ('Guava Tree', 'Healthy', True, 90.0),
+                    ('Pomegranate Tree', 'Healthy', True, 91.0),
+                    ('Lemon Tree', 'Healthy', True, 92.0),
+                    ('Peach Tree', 'Healthy', True, 90.0),
+                    ('Pear Tree', 'Healthy', True, 91.0),
+                    ('Coconut Tree', 'Healthy', True, 92.0),
+                    ('Neem Tree', 'Healthy', True, 94.0),
+                    ('Banyan Tree', 'Healthy', True, 95.0),
+                    ('Peepal Tree', 'Healthy', True, 95.0)
+                ]
+                selected = choice(mock_predictions)
+                identified_plant, disease, is_healthy, confidence = selected
+                _, plant_category = infer_plant_identity(identified_plant, disease)
         else:
-            # Mock prediction for development/testing
-            disease = 'Early Blight'
-            confidence = 85.5
-            is_healthy = False
-            identified_plant, plant_category = infer_plant_identity(plant_type, disease)
+            # Mock prediction for development/testing - add variety!
+            from random import choice, uniform
+            mock_predictions = [
+                # Vegetables
+                ('Tomato', 'Early Blight', False, 75.0),
+                ('Tomato', 'Late Blight', False, 80.0),
+                ('Tomato', 'Healthy', True, 90.0),
+                ('Potato', 'Early Blight', False, 78.0),
+                ('Potato', 'Late Blight', False, 85.0),
+                ('Potato', 'Healthy', True, 88.0),
+                ('Pepper', 'Bacterial Spot', False, 72.0),
+                ('Pepper', 'Healthy', True, 92.0),
+                ('Cucumber', 'Powdery Mildew', False, 70.0),
+                ('Cucumber', 'Healthy', True, 89.0),
+                ('Carrot', 'Healthy', True, 93.0),
+                ('Onion', 'Healthy', True, 91.0),
+                ('Garlic', 'Healthy', True, 94.0),
+                ('Cabbage', 'Healthy', True, 90.0),
+                ('Cauliflower', 'Healthy', True, 89.0),
+                ('Broccoli', 'Healthy', True, 91.0),
+                ('Spinach', 'Healthy', True, 92.0),
+                ('Lettuce', 'Healthy', True, 93.0),
+                ('Peas', 'Healthy', True, 90.0),
+                ('Beans', 'Healthy', True, 91.0),
+                ('Corn', 'Healthy', True, 92.0),
+                ('Zucchini', 'Healthy', True, 89.0),
+                ('Pumpkin', 'Healthy', True, 90.0),
+                
+                # Fruits
+                ('Apple', 'Healthy', True, 91.0),
+                ('Apple', 'Rust', False, 75.0),
+                ('Orange', 'Healthy', True, 92.0),
+                ('Banana', 'Healthy', True, 90.0),
+                ('Banana', 'Anthracnose', False, 78.0),
+                ('Grape', 'Healthy', True, 91.0),
+                ('Mango', 'Healthy', True, 92.0),
+                ('Mango', 'Anthracnose', False, 76.0),
+                ('Strawberry', 'Healthy', True, 90.0),
+                ('Pineapple', 'Healthy', True, 91.0),
+                ('Watermelon', 'Healthy', True, 92.0),
+                ('Papaya', 'Healthy', True, 89.0),
+                ('Guava', 'Healthy', True, 90.0),
+                ('Pomegranate', 'Healthy', True, 91.0),
+                ('Lemon', 'Healthy', True, 92.0),
+                ('Lime', 'Healthy', True, 91.0),
+                ('Cherry', 'Healthy', True, 90.0),
+                ('Peach', 'Healthy', True, 91.0),
+                ('Pear', 'Healthy', True, 92.0),
+                ('Plum', 'Healthy', True, 90.0),
+                ('Avocado', 'Healthy', True, 91.0),
+                ('Kiwi', 'Healthy', True, 92.0),
+                
+                # Trees
+                ('Mango Tree', 'Healthy', True, 90.0),
+                ('Apple Tree', 'Healthy', True, 91.0),
+                ('Orange Tree', 'Healthy', True, 92.0),
+                ('Banana Tree', 'Healthy', True, 89.0),
+                ('Guava Tree', 'Healthy', True, 90.0),
+                ('Pomegranate Tree', 'Healthy', True, 91.0),
+                ('Lemon Tree', 'Healthy', True, 92.0),
+                ('Peach Tree', 'Healthy', True, 90.0),
+                ('Pear Tree', 'Healthy', True, 91.0),
+                ('Coconut Tree', 'Healthy', True, 92.0),
+                ('Neem Tree', 'Healthy', True, 94.0),
+                ('Banyan Tree', 'Healthy', True, 95.0),
+                ('Peepal Tree', 'Healthy', True, 95.0)
+            ]
+            selected = choice(mock_predictions)
+            identified_plant, disease, is_healthy, confidence = selected
+            _, plant_category = infer_plant_identity(identified_plant, disease)
         
         # Get recommendations
         recommendations = get_disease_recommendations(disease, plant_type or identified_plant)

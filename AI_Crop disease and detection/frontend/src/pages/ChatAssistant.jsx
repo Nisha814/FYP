@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { FiSend } from 'react-icons/fi'
+import { useState, useEffect } from 'react'
+import { FiSend, FiTrash2 } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 import { chatService } from '../services/api'
 
@@ -7,12 +7,57 @@ const ChatAssistant = () => {
   const [plantType, setPlantType] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
-  const [messages, setMessages] = useState([
-    {
-      role: 'assistant',
-      text: 'Hi! Ask me about plant health, diseases, and treatment planning.'
+  const [messages, setMessages] = useState([])
+  const [loadingHistory, setLoadingHistory] = useState(true)
+
+  useEffect(() => {
+    loadChatHistory()
+  }, [])
+
+  const loadChatHistory = async () => {
+    try {
+      const response = await chatService.getHistory()
+      if (response.data.messages.length > 0) {
+        setMessages(response.data.messages.map(m => ({
+          role: m.role,
+          text: m.content,
+          id: m._id
+        })))
+      } else {
+        setMessages([
+          {
+            role: 'assistant',
+            text: 'Hi! Ask me about plant health, diseases, and treatment planning.'
+          }
+        ])
+      }
+    } catch (error) {
+      toast.error('Failed to load chat history')
+      setMessages([
+        {
+          role: 'assistant',
+          text: 'Hi! Ask me about plant health, diseases, and treatment planning.'
+        }
+      ])
+    } finally {
+      setLoadingHistory(false)
     }
-  ])
+  }
+
+  const handleClearHistory = async () => {
+    try {
+      await chatService.clearHistory()
+      setMessages([
+        {
+          role: 'assistant',
+          text: 'Hi! Ask me about plant health, diseases, and treatment planning.'
+        }
+      ])
+      toast.success('Chat history cleared')
+    } catch (error) {
+      toast.error('Failed to clear chat history')
+    }
+  }
 
   const handleSend = async () => {
     if (!message.trim()) return
@@ -31,9 +76,25 @@ const ChatAssistant = () => {
     }
   }
 
+  if (loadingHistory) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Plant Chat Assistant</h1>
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="text-3xl font-bold text-gray-900">Plant Chat Assistant</h1>
+        <button 
+          className="btn-secondary text-sm inline-flex items-center"
+          onClick={handleClearHistory}
+        >
+          <FiTrash2 className="mr-1" /> Clear History
+        </button>
+      </div>
       <p className="text-gray-600 mb-6">Get quick guidance for plant issues and care actions.</p>
 
       <div className="card mb-4">
@@ -49,7 +110,7 @@ const ChatAssistant = () => {
       <div className="card h-[420px] overflow-y-auto space-y-3 mb-4">
         {messages.map((item, index) => (
           <div
-            key={`${item.role}-${index}`}
+            key={item.id || `${item.role}-${index}`}
             className={`p-3 rounded-lg ${item.role === 'assistant' ? 'bg-primary-50 text-gray-800' : 'bg-gray-100 text-gray-900'}`}
           >
             <p className="text-xs font-semibold uppercase mb-1">{item.role}</p>

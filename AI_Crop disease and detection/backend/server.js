@@ -136,7 +136,8 @@ initSocket(server, corsOrigins);
 
 const seedInitialData = async () => {
   const adminEmail = 'admin@cropguard.local';
-  const farmerEmail = 'farmer.demo@cropguard.local';
+  const farmerEmail1 = 'farmer.john@cropguard.local';
+  const farmerEmail2 = 'farmer.maria@cropguard.local';
   const scientistEmail = 'scientist.demo@cropguard.local';
 
   let admin = await User.findOne({ email: adminEmail });
@@ -150,50 +151,111 @@ const seedInitialData = async () => {
     });
   }
 
-  let farmer = await User.findOne({ email: farmerEmail });
-  if (!farmer) {
-    farmer = await User.create({
-      name: 'Farmer Demo',
-      email: farmerEmail,
+  let farmerJohn = await User.findOne({ email: farmerEmail1 });
+  if (!farmerJohn) {
+    farmerJohn = await User.create({
+      name: 'John Farmer',
+      email: farmerEmail1,
       password: 'Farmer@123',
       role: 'farmer',
-      location: 'Village Farm'
+      location: 'Sunnyville Farm'
+    });
+  }
+
+  let farmerMaria = await User.findOne({ email: farmerEmail2 });
+  if (!farmerMaria) {
+    farmerMaria = await User.create({
+      name: 'Maria Grower',
+      email: farmerEmail2,
+      password: 'Farmer@123',
+      role: 'farmer',
+      location: 'Green Valley Orchard'
     });
   }
 
   let scientist = await User.findOne({ email: scientistEmail });
   if (!scientist) {
     scientist = await User.create({
-      name: 'Scientist Demo',
+      name: 'Dr. Plant Expert',
       email: scientistEmail,
       password: 'Scientist@123',
       role: 'expert',
-      location: 'Research Lab'
+      location: 'Agricultural Research Center'
     });
   }
 
   const postCount = await Post.countDocuments();
   if (postCount === 0) {
-    await Post.insertMany([
+    const posts = [
       {
-        user: farmer._id,
+        user: farmerJohn._id,
         plantType: 'Tomato',
         imageUrl: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=1200&q=80',
-        content: 'Leaves on my tomato are showing early yellow spots. I reduced overhead watering and started copper spray. Any extra suggestions?'
+        content: 'Guys, help! My tomato leaves are turning yellow with dark spots. What could be wrong? I water them every evening.',
+        likes: [farmerMaria._id],
+        comments: [
+          {
+            user: scientist._id,
+            text: 'This looks like early blight. Avoid overhead watering and apply a copper-based fungicide.'
+          },
+          {
+            user: farmerMaria._id,
+            text: 'I had the same issue last season! Try using neem oil, it worked for me.'
+          }
+        ]
+      },
+      {
+        user: farmerMaria._id,
+        plantType: 'Apple',
+        imageUrl: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?auto=format&fit=crop&w=1200&q=80',
+        content: 'Beautiful harvest this year! My apple trees are thriving after I added organic compost last spring.',
+        likes: [farmerJohn._id, scientist._id],
+        comments: [
+          {
+            user: farmerJohn._id,
+            text: 'Wow, that looks amazing! What compost did you use?'
+          },
+          {
+            user: farmerMaria._id,
+            text: 'Thanks John! I used a mix of cow manure and kitchen scraps, aged for 6 months.'
+          }
+        ]
       },
       {
         user: scientist._id,
         plantType: 'Potato',
         imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=1200&q=80',
-        content: 'Field observation: signs of late blight spread after 3 days of high humidity. Recommend immediate sanitation and fungicide rotation.'
+        content: 'Important update: Late blight risk is high this week due to high humidity. Check your potato fields daily!',
+        likes: [farmerJohn._id, farmerMaria._id],
+        comments: [
+          {
+            user: farmerJohn._id,
+            text: 'Thanks for the heads up! I will inspect my crops first thing tomorrow.'
+          }
+        ]
       },
       {
-        user: farmer._id,
-        plantType: 'Apple',
-        imageUrl: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?auto=format&fit=crop&w=1200&q=80',
-        content: 'Apple tree fruits look healthy this week after pruning and balanced feeding. Sharing photo for comparison with previous disease stage.'
+        user: farmerJohn._id,
+        plantType: 'Cucumber',
+        imageUrl: 'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?auto=format&fit=crop&w=1200&q=80',
+        content: 'My cucumber plants have white powdery spots on leaves. Any advice?',
+        likes: [],
+        comments: [
+          {
+            user: scientist._id,
+            text: 'That\'s powdery mildew. Improve air circulation and use a baking soda spray (1 tbsp per gallon of water).'
+          },
+          {
+            user: farmerMaria._id,
+            text: 'Also, make sure to water at the base, not the leaves! Good luck!'
+          }
+        ]
       }
-    ]);
+    ];
+
+    for (const postData of posts) {
+      const post = await Post.create(postData);
+    }
   }
 };
 

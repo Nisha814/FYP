@@ -26,6 +26,7 @@ api.interceptors.response.use(
         await api.post('/auth/refresh')
         return api(originalRequest)
       } catch (refreshError) {
+        console.error('Token refresh failed:', refreshError)
         return Promise.reject(refreshError)
       }
     }
@@ -74,7 +75,9 @@ export const socialService = {
 }
 
 export const chatService = {
-  ask: (message, plantType) => api.post('/chat', { message, plantType })
+  ask: (message, plantType) => api.post('/chat', { message, plantType }),
+  getHistory: () => api.get('/chat/history'),
+  clearHistory: () => api.delete('/chat/history')
 }
 
 export const noticeService = {
@@ -83,11 +86,13 @@ export const noticeService = {
 }
 
 export const adminService = {
+  getAnalytics: () => api.get('/admin/analytics'),
   getUsers: () => api.get('/admin/users'),
   updateUserRole: (userId, role) => api.patch(`/admin/users/${userId}/role`, { role }),
   getPosts: () => api.get('/admin/posts'),
   deletePost: (postId) => api.delete(`/admin/posts/${postId}`),
-  sendNotice: (payload) => api.post('/admin/notices', payload)
+  sendNotice: (payload) => api.post('/admin/notices', payload),
+  sendPublicNotice: (payload) => api.post('/admin/notices/public', payload)
 }
 
 export const notificationService = {

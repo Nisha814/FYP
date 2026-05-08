@@ -5,18 +5,18 @@ const bcrypt = require('bcryptjs');
 // Generate JWT Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE || '15m'
+    expiresIn: process.env.JWT_EXPIRE || '1d'
   });
 };
 
 const generateRefreshToken = (id) => {
   return jwt.sign({ id, type: 'refresh' }, process.env.JWT_SECRET, {
-    expiresIn: process.env.REFRESH_TOKEN_EXPIRE || '30d'
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRE || '60d'
   });
 };
 
 const setAuthCookie = (res, token) => {
-  const maxAge = 15 * 60 * 1000;
+  const maxAge = 24 * 60 * 60 * 1000;
   res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -26,7 +26,7 @@ const setAuthCookie = (res, token) => {
 };
 
 const setRefreshCookie = (res, refreshToken) => {
-  const maxAge = 30 * 24 * 60 * 60 * 1000;
+  const maxAge = 60 * 24 * 60 * 60 * 1000;
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -91,6 +91,7 @@ exports.register = async (req, res, next) => {
       }
     });
   } catch (error) {
+    console.error('Registration error:', error);
     res.status(500).json({ 
       message: error.message || 'Server error during registration' 
     });
@@ -144,6 +145,7 @@ exports.login = async (req, res, next) => {
       }
     });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ 
       message: error.message || 'Server error during login' 
     });
